@@ -1,0 +1,135 @@
+variable "namespace" {
+  type        = string
+  description = "Namespace, which could be your team, business name or abbreviation, e.g. 'mag' or 'tar'"
+}
+
+variable "environment" {
+  type        = string
+  description = "Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT'"
+}
+
+variable "name" {
+  type        = string
+  description = "Solution name, e.g. 'app' or 'jenkins'"
+}
+
+variable "attributes" {
+  type        = list(string)
+  default     = []
+  description = "Additional attributes (e.g. `1`)"
+}
+
+variable "tags" {
+  type        = map(string)
+  default     = {}
+  description = "Additional tags (e.g. `map('BusinessUnit','XYZ')`"
+}
+
+variable "acl" {
+  type        = string
+  default     = "private"
+  description = "The canned ACL to apply. We recommend `private` to avoid exposing sensitive information"
+}
+
+variable "policy" {
+  type        = string
+  default     = ""
+  description = "A valid bucket policy JSON document. Note that if the policy document is not specific enough (but still valid), Terraform may view the policy as constantly changing in a terraform plan. In this case, please make sure you use the verbose/specific version of the policy"
+}
+
+variable "region" {
+  type        = string
+  default     = ""
+  description = "If specified, the AWS region this bucket should reside in. Otherwise, the region used by the callee"
+}
+
+variable "force_destroy" {
+  type        = bool
+  default     = false
+  description = "A boolean string that indicates all objects should be deleted from the bucket so that the bucket can be destroyed without error. These objects are not recoverable"
+}
+
+variable "versioning_enabled" {
+  type        = bool
+  default     = false
+  description = "A state of versioning. Versioning is a means of keeping multiple variants of an object in the same bucket"
+}
+
+variable "sse_algorithm" {
+  type        = string
+  default     = "AES256"
+  description = "The server-side encryption algorithm to use. Valid values are `AES256` and `aws:kms`"
+}
+
+variable "kms_master_key_arn" {
+  type        = string
+  default     = ""
+  description = "The AWS KMS master key ARN used for the `SSE-KMS` encryption. This can only be used when you set the value of `sse_algorithm` as `aws:kms`. The default aws/s3 AWS KMS master key is used if this element is absent while the `sse_algorithm` is `aws:kms`"
+}
+
+
+variable "allow_encrypted_uploads_only" {
+  type        = bool
+  default     = false
+  description = "Set to `true` to prevent uploads of unencrypted objects to S3 bucket"
+}
+
+variable "lifecycle_rule_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable or disable lifecycle rule"
+}
+
+variable "prefix" {
+  type        = string
+  default     = ""
+  description = "Prefix identifying one or more objects to which the rule applies"
+}
+
+variable "noncurrent_version_transition_days" {
+  type        = number
+  default     = 30
+  description = "Number of days to persist in the standard storage tier before moving to the glacier tier infrequent access tier"
+}
+
+variable "noncurrent_version_expiration_days" {
+  type        = number
+  default     = 90
+  description = "Specifies when noncurrent object versions expire"
+}
+
+variable "standard_transition_days" {
+  type        = number
+  default     = 30
+  description = "Number of days to persist in the standard storage tier before moving to the infrequent access tier"
+}
+
+variable "glacier_transition_days" {
+  type        = number
+  default     = 60
+  description = "Number of days after which to move the data to the glacier storage tier"
+}
+
+variable "enable_glacier_transition" {
+  type        = bool
+  default     = false
+  description = "Enables the transition to AWS Glacier which can cause unnecessary costs for huge amount of small files"
+}
+
+variable "expiration_days" {
+  type        = number
+  default     = 90
+  description = "Number of days after which to expunge the objects"
+}
+
+variable "abort_incomplete_multipart_upload_days" {
+  type        = number
+  default     = 5
+  description = "Maximum time (in days) that you want to allow multipart uploads to remain in progress"
+}
+
+variable "lifecycle_tags" {
+  type        = map(string)
+  description = "Tags filter. Used to manage object lifecycle events"
+  default     = {}
+}
