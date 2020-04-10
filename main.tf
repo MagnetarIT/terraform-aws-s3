@@ -80,7 +80,7 @@ data "aws_iam_policy_document" "bucket_policy" {
     sid       = "DenyIncorrectEncryptionHeader"
     effect    = "Deny"
     actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::${join("", aws_s3_bucket.default.*.id)}/*"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.default.id}/*"]
 
     principals {
       identifiers = ["*"]
@@ -98,7 +98,7 @@ data "aws_iam_policy_document" "bucket_policy" {
     sid       = "DenyUnEncryptedObjectUploads"
     effect    = "Deny"
     actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::${aws_s3_bucket.default[0].id}/*"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.default.id}/*"]
 
     principals {
       identifiers = ["*"]
@@ -115,6 +115,6 @@ data "aws_iam_policy_document" "bucket_policy" {
 
 resource "aws_s3_bucket_policy" "default" {
   count  = var.allow_encrypted_uploads_only ? 1 : 0
-  bucket = join("", aws_s3_bucket.default.*.id)
+  bucket = aws_s3_bucket.default.id
   policy = join("", data.aws_iam_policy_document.bucket_policy.*.json)
 }
