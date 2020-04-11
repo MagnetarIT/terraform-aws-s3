@@ -133,3 +133,27 @@ variable "lifecycle_tags" {
   description = "Tags filter. Used to manage object lifecycle events"
   default     = {}
 }
+
+variable "user_enabled" {
+  type        = bool
+  default     = false
+  description = "Set to true to enable the module to create an IAM user"
+}
+
+variable "s3_actions" {
+  type        = list(string)
+  default     = ["s3:GetObject"]
+  description = "Actions to allow in the policy, default is read only"
+}
+
+variable "user_force_destroy" {
+  type        = bool
+  default     = false
+  description = "Destroy even if it has non-Terraform-managed IAM access keys, login profiles or MFA devices"
+}
+
+variable "user_path" {
+  type        = string
+  default     = "/"
+  description = "Path in which to create the user"
+}

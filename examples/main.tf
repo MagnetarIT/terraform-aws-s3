@@ -7,9 +7,10 @@ resource "random_id" "s3" {
 }
 
 module "s3" {
-  source      = "../"
-  namespace   = "mag"
-  environment = "test"
-  name        = "app"
-  attributes  = [random_id.s3.hex]
+  source       = "../"
+  namespace    = "mag"
+  environment  = "test"
+  name         = "app"
+  attributes   = [random_id.s3.hex]
+  user_enabled = true
 }

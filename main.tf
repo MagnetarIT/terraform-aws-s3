@@ -118,3 +118,33 @@ resource "aws_s3_bucket_policy" "default" {
   bucket = aws_s3_bucket.default.id
   policy = join("", data.aws_iam_policy_document.bucket_policy.*.json)
 }
+
+data "aws_iam_policy_document" "default" {
+  count = var.user_enabled ? 1 : 0
+
+  statement {
+    actions   = var.s3_actions
+    resources = ["${join("", aws_s3_bucket.default.*.arn)}/*", join("", aws_s3_bucket.default.*.arn)]
+    effect    = "Allow"
+  }
+}
+
+resource "aws_iam_user_policy" "default" {
+  count  = var.user_enabled ? 1 : 0
+  name   = join("", aws_iam_user.default.*.name)
+  user   = join("", aws_iam_user.default.*.name)
+  policy = join("", data.aws_iam_policy_document.default.*.json)
+}
+
+resource "aws_iam_user" "default" {
+  count         = var.user_enabled ? 1 : 0
+  name          = module.naming.id
+  path          = var.user_path
+  force_destroy = var.user_force_destroy
+}
+
+resource "aws_iam_access_key" "default" {
+  count = var.user_enabled ? 1 : 0
+  user  = aws_iam_user.default[0].name
+}
+

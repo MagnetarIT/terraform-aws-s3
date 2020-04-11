@@ -72,9 +72,13 @@ This module will create the following resources
 | policy | A valid bucket policy JSON document. Note that if the policy document is not specific enough (but still valid), Terraform may view the policy as constantly changing in a terraform plan. In this case, please make sure you use the verbose/specific version of the policy | `string` | `""` | no |
 | prefix | Prefix identifying one or more objects to which the rule applies | `string` | `""` | no |
 | region | If specified, the AWS region this bucket should reside in. Otherwise, the region used by the callee | `string` | `""` | no |
+| s3\_actions | Actions to allow in the policy, default is read only | `list(string)` | <pre>[<br>  "s3:GetObject"<br>]</pre> | no |
 | sse\_algorithm | The server-side encryption algorithm to use. Valid values are `AES256` and `aws:kms` | `string` | `"AES256"` | no |
 | standard\_transition\_days | Number of days to persist in the standard storage tier before moving to the infrequent access tier | `number` | `30` | no |
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
+| user\_enabled | Set to true to enable the module to create an IAM user | `bool` | `false` | no |
+| user\_force\_destroy | Destroy even if it has non-Terraform-managed IAM access keys, login profiles or MFA devices | `bool` | `false` | no |
+| user\_path | Path in which to create the user | `string` | `"/"` | no |
 | versioning\_enabled | A state of versioning. Versioning is a means of keeping multiple variants of an object in the same bucket | `bool` | `false` | no |
 
 ---
@@ -83,9 +87,16 @@ This module will create the following resources
 
 | Name | Description |
 |------|-------------|
+| access\_key\_id | The access key ID |
 | bucket\_arn | Bucket ARN |
 | bucket\_domain\_name | FQDN of bucket |
 | bucket\_id | Bucket Name (aka ID) |
+| secret\_access\_key | The secret access key. This will be written to the state file in plain-text |
+| ses\_smtp\_password | The secret access key converted into an SES SMTP password by applying AWS's documented conversion algorithm. |
+| user\_arn | The ARN assigned by AWS for this user |
+| user\_enabled | Is user creation enabled |
+| user\_name | Normalized IAM user name |
+| user\_unique\_id | The unique ID assigned by AWS |
 
 ## Support
 
