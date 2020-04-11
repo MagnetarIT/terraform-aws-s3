@@ -24,7 +24,7 @@ provider "aws" {
 }
 
 module "s3" {
-  source      = "git::https://github.com/MagnetarIT/terraform-aws-s3.git?ref=tags/0.1.0"
+  source      = "git::https://github.com/MagnetarIT/terraform-aws-s3.git?ref=tags/0.2.0"
   namespace   = "mag"
   environment = "test"
   name        = "app"
